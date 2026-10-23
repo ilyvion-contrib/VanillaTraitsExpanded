@@ -21,4 +21,24 @@ namespace VanillaTraitsExpanded
             }
         }
     }
+
+    [HarmonyPatch(typeof(HediffComp_SeverityPerDay), "CompTipStringExtra", MethodType.Getter)]
+    public static class CompTipStringExtra_Patch
+    {
+        public static void Postfix(HediffComp_SeverityPerDay __instance, ref string __result)
+        {
+            if (__result == null)
+            {
+                return;
+            }
+            if (__instance.parent.def == VTEDefOf.AlcoholAddiction && __instance.Pawn.HasTrait(VTEDefOf.VTE_Lush))
+            {
+                __result = "VTE.LushNeverRecovers".Translate();
+            }
+            else if (__instance.parent.def == VTEDefOf.SmokeleafAddiction && __instance.Pawn.HasTrait(VTEDefOf.VTE_Stoner))
+            {
+                __result = "VTE.StonerNeverRecovers".Translate();
+            }
+        }
+    }
 }
